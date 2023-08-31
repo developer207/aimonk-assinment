@@ -1,57 +1,69 @@
-import React, { useState } from 'react';
-import './TagView.css'; // Import the CSS file
+import { useState } from "react";
+import "./TagView.css"
 
 const TagView = ({ tag, onUpdate, onAddChild }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [newTagName, setNewTagName] = useState(tag.name);
+  const [editingName, setEditingName] = useState(false);
+  const [name, setName] = useState(tag.name);
 
-  const toggleCollapsed = () => setCollapsed(!collapsed);
+  const handleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
 
-  const handleEditClick = () => setEditing(true);
+  const handleAddChild = () => {
+    onAddChild(tag);
+  };
 
-  const handleEditChange = (event) => setNewTagName(event.target.value);
+  const handleNameEdit = () => {
+    setEditingName(true);
+  };
 
-  const handleEditKeyPress = (event) => {
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleNameSave = (event) => {
     if (event.key === 'Enter') {
-      onUpdate(tag.name, newTagName);
-      setEditing(false);
+      setEditingName(false);
+      onUpdate(tag, { name });
     }
   };
 
   return (
     <div className="tag">
       <div className="tag-header">
-        <button onClick={toggleCollapsed}>{collapsed ? '>' : 'v'}</button>
-        {editing ? (
+        <button onClick={handleCollapse}>{collapsed ? '>' : 'v'}</button>
+        {editingName ? (
           <input
             type="text"
-            value={newTagName}
-            onChange={handleEditChange}
-            onKeyPress={handleEditKeyPress}
+            value={name}
+            onChange={handleNameChange}
+            onKeyDown={handleNameSave}
+            onBlur={handleNameSave}
           />
         ) : (
-          <span onClick={handleEditClick}>{tag.name}</span>
+          <span onClick={handleNameEdit}>{tag.name}</span>
         )}
-        {tag.data && (
-          <input
-            type="text"
-            value={tag.data}
-            onChange={(event) => onUpdate(tag.name, newTagName, event.target.value)}
-          />
-        )}
-        <button onClick={() => onAddChild(tag.name)}>Add Child</button>
+        <button onClick={handleAddChild}>Add Child</button>
       </div>
-      {!collapsed && tag.children && (
-        <div className="tag-children">
-          {tag.children.map((childTag) => (
-            <TagView
-              key={childTag.name}
-              tag={childTag}
-              onUpdate={onUpdate}
-              onAddChild={onAddChild}
+      {!collapsed && (
+        <div className="tag-content">
+          {tag.data !== undefined && (
+            <input
+              type="text"
+              value={tag.data}
+              onChange={(event) => onUpdate(tag, { data: event.target.value })}
             />
-          ))}
+          )}
+          {tag.children &&
+            tag.children.map((child) => (
+              <TagView
+                key={child.name}
+                tag={child}
+                onUpdate={onUpdate}
+                onAddChild={onAddChild}
+              />
+            ))}
         </div>
       )}
     </div>

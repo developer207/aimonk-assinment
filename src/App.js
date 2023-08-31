@@ -1,90 +1,83 @@
-import logo from './logo.svg';
-import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import './App.css'; // You can create your own CSS file for styling.
 import TagView from './components/TagView/TagView';
+// import TagView from './components/TagView';
+
+const initialTree = {
+  name: 'root',
+  children: [
+    {
+      name: 'child1',
+      children: [
+        { name: 'child1-child1', data: 'c1-c1 Hello' },
+        { name: 'child1-child2', data: 'c1-c2 JS' },
+      ],
+    },
+    { name: 'child2', data: 'c2 World' },
+  ],
+};
 
 function App() {
-  const initialTree = {
-    name: 'root',
-    children: [
-      {
-        name: 'child1',
-        children: [
-          { name: 'child1-child1', data: 'c1-c1 Hello' },
-          { name: 'child1-child2', data: 'c1-c2 JS' },
-        ],
-      },
-      { name: 'child2', data: 'c2 World' },
-    ],
-  };
-
   const [tree, setTree] = useState(initialTree);
 
-  const handleUpdate = (parentName, childName, newData) => {
-    const updatedTree = updateTreeData(tree, parentName, childName, newData);
+  const updateTag = (tagToUpdate, newData) => {
+    const updatedTree = recursivelyUpdateTag(tree, tagToUpdate, newData);
     setTree(updatedTree);
-  };
-  
-  const handleAddChild = (parentName) => {
-    const updatedTree = addChildToTree(tree, parentName);
-    setTree(updatedTree);
-  };
-  
-  // Function to update the data of a specific child in the tree
-  const updateTreeData = (currentNode, parentName, childName, newData) => {
-    if (currentNode.name === parentName) {
-      const updatedChildren = currentNode.children.map((child) => {
-        if (child.name === childName) {
-          return { ...child, data: newData };
-        }
-        return child;
-      });
-      return { ...currentNode, children: updatedChildren };
-    }
-  
-    if (currentNode.children) {
-      const updatedChildren = currentNode.children.map((child) =>
-        updateTreeData(child, parentName, childName, newData)
-      );
-      return { ...currentNode, children: updatedChildren };
-    }
-  
-    return currentNode;
-  };
-  
-  // Function to add a new child to the tree
-  const addChildToTree = (currentNode, parentName) => {
-    if (currentNode.name === parentName) {
-      const newChild = { name: 'New Child', data: 'Data' };
-      if (!currentNode.children) {
-        currentNode.children = [];
-      }
-      const updatedChildren = [...currentNode.children, newChild];
-      return { ...currentNode, children: updatedChildren };
-    }
-  
-    if (currentNode.children) {
-      const updatedChildren = currentNode.children.map((child) =>
-        addChildToTree(child, parentName)
-      );
-      return { ...currentNode, children: updatedChildren };
-    }
-  
-    return currentNode;
-  };
-  
-  const handleExport = () => {
-    const exportedData = JSON.stringify(tree, (key, value) => {
-      
-      return value;
-    }, 2); 
-    console.log(exportedData); 
   };
 
+  const recursivelyUpdateTag = (currentTag, tagToUpdate, newData) => {
+    if (currentTag === tagToUpdate) {
+      return { ...currentTag, ...newData };
+    }
+
+    if (currentTag.children) {
+      return {
+        ...currentTag,
+        children: currentTag.children.map((child) =>
+          recursivelyUpdateTag(child, tagToUpdate, newData)
+        ),
+      };
+    }
+
+    return currentTag;
+  };
+
+  const addChildToTag = (parentTag) => {
+    const newChild = { name: 'New Child', data: 'Data' };
+    const updatedTree = recursivelyAddChild(tree, parentTag, newChild);
+    setTree(updatedTree);
+  };
+
+  const recursivelyAddChild = (currentTag, parentTag, newChild) => {
+    if (currentTag === parentTag) {
+      if (!currentTag.children) {
+        currentTag.children = [];
+      }
+      currentTag.children.push(newChild);
+      return { ...currentTag };
+    }
+
+    if (currentTag.children) {
+      return {
+        ...currentTag,
+        children: currentTag.children.map((child) =>
+          recursivelyAddChild(child, parentTag, newChild)
+        ),
+      };
+    }
+
+    return currentTag;
+  };
+
+  const handleExport = () => {
+    const exportedTree = JSON.stringify(tree, ['name', 'children', 'data'], 2);
+    console.log(exportedTree);
+  };
 
   return (
     <div className="App">
-      <TagView tag={tree} onUpdate={handleUpdate} onAddChild={handleAddChild} />
+      
+      <TagView tag={tree} onUpdate={updateTag} onAddChild={addChildToTag} />
       <button onClick={handleExport}>Export</button>
     </div>
   );

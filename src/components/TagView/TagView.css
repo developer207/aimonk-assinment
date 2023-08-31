@@ -1,10 +1,10 @@
 /* TagView.css */
 
 .tag {
-    border: 1px solid #ccc;
+    border: 1px solid #478aff;
     margin: 10px;
     padding: 10px;
-    background-color: #f5f5f5;
+    /* background-color: #f5f5f5; */
     border-radius: 5px;
   }
   
@@ -12,9 +12,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
-    background-color: #fff;
-    border-bottom: 1px solid #ccc;
+    padding: 9px;
+    background-color: #478aff;
+    /* border-bottom: 1px solid #ccc; */
     cursor: pointer;
   }
   

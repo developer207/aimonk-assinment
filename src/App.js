@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css'; // You can create your own CSS file for styling.
+import './App.css'; 
 import TagView from './components/TagView/TagView';
 const initialTree = {
   name: 'root',
@@ -18,7 +18,7 @@ const initialTree = {
 function App() {
   const [tree, setTree] = useState(initialTree);
 
-  const updateTag = (tagToUpdate, newData) => {
+  const updateTagData = (tagToUpdate, newData) => {
     const updatedTree = recursivelyUpdateTag(tree, tagToUpdate, newData);
     setTree(updatedTree);
   };
@@ -75,7 +75,7 @@ function App() {
   return (
     <div className="App">
       
-      <TagView tag={tree} onUpdate={updateTag} onAddChild={addChildToTag} />
+      <TagView tag={tree} onUpdate={updateTagData} onAddChild={addChildToTag} />
       <button onClick={handleExportData}>Export</button>
     </div>
   );

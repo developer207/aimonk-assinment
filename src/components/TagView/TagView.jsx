@@ -31,7 +31,7 @@ const TagView = ({ tag, onUpdate, onAddChild }) => {
 
   return (
     <div className="tag">
-      <div className="tag-header">
+      <div className="tag-header bg-blue-400">
         <button onClick={handleCollapse}>{collapsed ? '>' : 'v'}</button>
         {editingName ? (
           <input

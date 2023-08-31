@@ -48,12 +48,14 @@ const TagView = ({ tag, onUpdate, onAddChild }) => {
       </div>
       {!collapsed && (
         <div className="tag-content">
+          
           {tag.data !== undefined && (
-            <input
+            <div className="py-5"> <span>Data : </span> <input
               type="text"
               value={tag.data}
               onChange={(event) => onUpdate(tag, { data: event.target.value })}
-            />
+            /></div> 
+           
           )}
           {tag.children &&
             tag.children.map((child) => (

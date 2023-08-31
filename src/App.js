@@ -73,10 +73,12 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="px-20 space-y-5">
+
+      <h1 className='py-5 text-2xl font-semibold text-center'>Tree</h1>
       
       <TagView tag={tree} onUpdate={updateTagData} onAddChild={addChildToTag} />
-      <button onClick={handleExportData}>Export</button>
+      <button className='py-3 font-bold text-xl bg-blue-500 text-white w-full rounded-md' onClick={handleExportData}>Export Data</button>
     </div>
   );
 }

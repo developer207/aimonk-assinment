@@ -2,10 +2,9 @@
 
 .tag {
     border: 1px solid #478aff;
-    margin: 10px;
     padding: 10px;
-    /* background-color: #f5f5f5; */
     border-radius: 5px;
+    margin: 10px 0px;
   }
   
   .tag-header {
@@ -19,10 +18,12 @@
   }
   
   .tag-header button {
-    background-color: transparent;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 19px;
+    background-color: #cbcbcb;
+    padding: 5px 20px;
+    border-radius: 4px;
   }
   
   .tag-header span {

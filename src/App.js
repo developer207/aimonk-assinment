@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './App.css'; // You can create your own CSS file for styling.
 import TagView from './components/TagView/TagView';
-// import TagView from './components/TagView';
-
 const initialTree = {
   name: 'root',
   children: [
@@ -69,7 +67,7 @@ function App() {
     return currentTag;
   };
 
-  const handleExport = () => {
+  const handleExportData = () => {
     const exportedTree = JSON.stringify(tree, ['name', 'children', 'data'], 2);
     console.log(exportedTree);
   };
@@ -78,7 +76,7 @@ function App() {
     <div className="App">
       
       <TagView tag={tree} onUpdate={updateTag} onAddChild={addChildToTag} />
-      <button onClick={handleExport}>Export</button>
+      <button onClick={handleExportData}>Export</button>
     </div>
   );
 }

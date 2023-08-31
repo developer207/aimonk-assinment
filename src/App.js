@@ -73,12 +73,19 @@ function App() {
     return currentNode;
   };
   
+  const handleExport = () => {
+    const exportedData = JSON.stringify(tree, (key, value) => {
+      
+      return value;
+    }, 2); 
+    console.log(exportedData); 
+  };
 
 
   return (
     <div className="App">
       <TagView tag={tree} onUpdate={handleUpdate} onAddChild={handleAddChild} />
-
+      <button onClick={handleExport}>Export</button>
     </div>
   );
 }
